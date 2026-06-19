@@ -29,7 +29,7 @@ function MenuLink({ url, children, className }: MenuLinkProps) {
 
 export function QuickLinks({ items }: { items: MenuItem[] }) {
   return (
-    <ul className="hidden md:flex items-center gap-5">
+    <ul className="hidden md:flex items-center gap-7">
       {items.map((item) => (
         <NavItem key={item.id} item={item} />
       ))}
@@ -37,7 +37,8 @@ export function QuickLinks({ items }: { items: MenuItem[] }) {
   );
 }
 
-const TRIGGER_CLASS = "flex items-center gap-1 text-sm hover:opacity-70 transition-opacity";
+const TRIGGER_CLASS =
+  "eyebrow flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors";
 
 function NavItem({ item }: { item: MenuItem }) {
   if (item.items.length === 0) {
