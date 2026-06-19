@@ -24,7 +24,9 @@ function ProductInfoHeader({
 }: ProductInfoHeaderProps) {
   return (
     <div data-slot="product-info-header" className={className} {...props}>
-      <h1 className={cn("font-semibold text-foreground tracking-tight", "text-3xl")}>{title}</h1>
+      <h1 className={cn("font-semibold text-foreground display", "text-4xl sm:text-5xl")}>
+        {title}
+      </h1>
 
       {selectedVariant && (
         <ProductPrice
@@ -77,7 +79,7 @@ function ProductInfoOptions({
     <div data-slot="product-info-options" className={className} {...props}>
       <div className="grid gap-5">
         {singleValueOptions.map((option) => (
-          <p key={option.id} className="text-sm font-medium text-foreground/70">
+          <p key={option.id} className="eyebrow text-muted-foreground">
             {option.name}: <span className="text-foreground">{option.values[0]?.name}</span>
           </p>
         ))}

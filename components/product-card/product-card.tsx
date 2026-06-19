@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import type { Locale } from "@/lib/i18n";
 import type { ProductCard as ProductCardType } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 import {
   type ProductCardAspectRatio,
@@ -39,7 +40,11 @@ export async function ProductCard({
   const t = isFeatured ? await getTranslations("product") : null;
 
   return (
-    <Link href={`/products/${product.handle}`} className={className} prefetch={true}>
+    <Link
+      href={`/products/${product.handle}`}
+      className={cn("group block", className)}
+      prefetch={true}
+    >
       <ProductCardRoot variant={variant}>
         {isFeatured && t && (
           <ProductCardBadge>

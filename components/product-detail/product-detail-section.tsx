@@ -177,8 +177,12 @@ async function ProductInfoArea({
   return (
     <div className="grid gap-10 lg:sticky lg:top-20 lg:col-span-4">
       <div data-slot="product-info-header">
-        <h1 className="font-semibold text-foreground tracking-tight text-3xl">{title}</h1>
-        {uniformPrice ? (
+        <p className="eyebrow mb-3 text-muted-foreground">
+          {product.manufacturerName || siteConfig.name}
+        </p>
+        <h1 className="font-semibold text-foreground display text-4xl sm:text-5xl">{title}</h1>
+        <div className="mt-3">
+          {uniformPrice ? (
           <ProductPrice
             amount={product.priceRange.minVariantPrice.amount}
             currencyCode={product.priceRange.minVariantPrice.currencyCode}
@@ -186,11 +190,12 @@ async function ProductInfoArea({
             locale={locale}
           />
         ) : (
-          // h-7 matches the resolved price's text-xl line-height (1.75rem) — keep in sync to avoid CLS
-          <Suspense fallback={<div className="h-7" aria-hidden />}>
-            <ResolvedProductPrice variantPromise={variantPromise} locale={locale} />
-          </Suspense>
-        )}
+            // h-7 matches the resolved price's text-xl line-height (1.75rem) — keep in sync to avoid CLS
+            <Suspense fallback={<div className="h-7" aria-hidden />}>
+              <ResolvedProductPrice variantPromise={variantPromise} locale={locale} />
+            </Suspense>
+          )}
+        </div>
       </div>
 
       {eagerSelection ? (

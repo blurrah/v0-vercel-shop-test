@@ -85,10 +85,20 @@ function ProductCardImage({
     <div
       data-slot="product-card-image"
       data-aspect-ratio={aspectRatio}
-      className={cn("relative overflow-hidden", aspectRatioClasses, className)}
+      className={cn(
+        "relative overflow-hidden rounded-lg bg-secondary",
+        aspectRatioClasses,
+        className,
+      )}
     >
       {src ? (
-        <Image src={src} alt={alt} fill className="object-cover" sizes={sizes} />
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          sizes={sizes}
+        />
       ) : (
         <ImagePlaceholder className="size-full" />
       )}
@@ -119,7 +129,10 @@ function ProductCardTitle({ className, children, ...props }: React.ComponentProp
   return (
     <h3
       data-slot="product-card-title"
-      className={cn("text-sm font-semibold text-main-foreground line-clamp-2", className)}
+      className={cn(
+        "text-sm font-semibold text-main-foreground line-clamp-2 transition-colors group-hover:text-muted-foreground",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -162,7 +175,7 @@ function ProductCardPrice({
           amount={amount}
           currencyCode={currencyCode}
           locale={locale}
-          className="text-sm text-main-foreground"
+          className="font-mono text-sm tabular-nums text-main-foreground"
         />
         {discountPercent && compareAtAmount && compareAtCurrencyCode && (
           <>
@@ -170,7 +183,7 @@ function ProductCardPrice({
               amount={compareAtAmount}
               currencyCode={compareAtCurrencyCode}
               locale={locale}
-              className="text-xs text-muted-foreground line-through"
+              className="font-mono text-xs tabular-nums text-muted-foreground line-through"
             />
             <DiscountBadge percent={discountPercent} variant={discountVariant} />
           </>

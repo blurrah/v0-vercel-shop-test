@@ -26,13 +26,18 @@ export function ProductPrice({
 
   return (
     <div className={cn("flex items-center gap-2.5 flex-wrap", className)} {...props}>
-      <Price amount={amount} currencyCode={currencyCode} locale={locale} className="text-xl" />
+      <Price
+        amount={amount}
+        currencyCode={currencyCode}
+        locale={locale}
+        className="font-mono text-xl tabular-nums"
+      />
       {compareAtAmount && Number(compareAtAmount) > Number(amount) && (
         <Price
           amount={compareAtAmount}
           currencyCode={currencyCode}
           locale={locale}
-          className="text-xl line-through text-foreground/35"
+          className="font-mono text-xl tabular-nums line-through text-foreground/35"
         />
       )}
       {discountPercent && <DiscountBadge percent={discountPercent} />}

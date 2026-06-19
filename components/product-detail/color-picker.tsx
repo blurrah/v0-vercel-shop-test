@@ -32,7 +32,7 @@ export function ColorPicker({
 }: ColorPickerProps) {
   return (
     <div className={cn("grid gap-2.5", className)} {...props}>
-      <p className="text-sm font-medium text-foreground/70">
+      <p className="eyebrow text-muted-foreground">
         {option.name}: <span className="text-foreground">{selectedValue}</span>
       </p>
       <div className="grid grid-cols-4 lg:grid-cols-5 gap-2.5">

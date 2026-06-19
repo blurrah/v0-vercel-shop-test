@@ -114,11 +114,14 @@ function CollectionHeader({
     <>
       <BreadcrumbSchema items={breadcrumbItems} />
       <CollectionSchema collection={{ handle, title, description, updatedAt }} />
-      <div>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight">
+      <div className="border-b border-border pb-6">
+        <p className="eyebrow text-muted-foreground">Collection / {handle}</p>
+        <h1 className="display mt-3 text-4xl sm:text-5xl md:text-6xl font-semibold">
           <Link href={`/collections/${handle}`}>{title}</Link>
         </h1>
-        {description && <p className="mt-1 text-muted-foreground">{description}</p>}
+        {description && (
+          <p className="mt-3 max-w-xl text-pretty text-muted-foreground">{description}</p>
+        )}
       </div>
     </>
   );
