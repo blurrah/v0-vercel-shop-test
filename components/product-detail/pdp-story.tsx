@@ -110,10 +110,13 @@ export function PerformanceStory({ story }: { story: ProductStory }) {
   return (
     <Container className="border-t border-border py-14 lg:py-20">
       <div className="grid gap-10 md:grid-cols-3 md:gap-8">
-        {blocks.map((block) => (
+        {blocks.map((block, i) => (
           <article key={block.title}>
-            <div className="h-1 w-full bg-flag-soft" aria-hidden />
-            <h3 className="mt-5 text-2xl font-semibold tracking-tight text-balance">
+            <div className="h-1.5 w-12 bg-flag" aria-hidden />
+            <span className="mt-5 block font-mono text-xs tracking-[0.15em] text-muted-foreground">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <h3 className="mt-2 text-2xl font-semibold tracking-tight text-balance">
               {block.title}
             </h3>
             <p className="mt-3 text-pretty leading-relaxed text-muted-foreground">{block.copy}</p>
