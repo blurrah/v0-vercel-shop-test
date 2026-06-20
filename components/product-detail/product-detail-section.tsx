@@ -3,33 +3,28 @@ import { Suspense } from "react";
 
 import { BundleComponents, BundleParents } from "@/components/product-detail/bundle-components";
 import { BuyButtons, type BuyButtonVariant } from "@/components/product-detail/buy-buttons";
-import {
-  ProductInfoDescription,
-  ProductInfoOptions,
-} from "@/components/product-detail/product-info";
-import {
-  ColorImageCarouselItems,
-  ColorImageGrid,
-  ProductMedia,
-  ProductMediaSkeleton,
-} from "@/components/product-detail/product-media";
+import { PdpGallery } from "@/components/product-detail/pdp-gallery";
+import { ProductInfoOptions } from "@/components/product-detail/product-info";
 import { ProductPrice } from "@/components/product-detail/product-price";
 import { ProductSchema } from "@/components/product-detail/schema";
 import { ShopLogo } from "@/components/product-detail/shop-logo";
 import { BreadcrumbSchema } from "@/components/schema/breadcrumb-schema";
-import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Container } from "@/components/ui/container";
 import { siteConfig } from "@/lib/config";
 import type { Locale } from "@/lib/i18n";
-import {
-  defaultSelectedOptions,
-  getSelectedColorImage,
-  getSharedImages,
-  hasColorImagePartitioning,
-  type SelectedOptions,
-} from "@/lib/product";
+import { defaultSelectedOptions, type SelectedOptions } from "@/lib/product";
+import { getProductStory } from "@/lib/product-specs";
 import { getAvailableOptionValues } from "@/lib/shopify/encoded-variants";
 import type { ProductDetails, ProductVariant } from "@/lib/types";
 import { cn } from "@/lib/utils";
+
+import { EditorialTriptych, KeyFeatures, SpecRow } from "./pdp-story";
 
 export function ProductDetailSection({
   product,
@@ -42,6 +37,8 @@ export function ProductDetailSection({
   variantPromise: Promise<ProductVariant | undefined>;
   locale: Locale;
 }) {
+  const story = getProductStory(product);
+
   return (
     <>
       <ProductSchema
@@ -64,91 +61,25 @@ export function ProductDetailSection({
           { name: product.title, path: `/products/${product.handle}` },
         ]}
       />
-      <div className="grid gap-10 lg:grid-cols-10 lg:items-start lg:gap-5">
-        <ProductMediaArea product={product} selectedOptionsPromise={selectedOptionsPromise} />
-        <ProductInfoArea
-          product={product}
-          selectedOptionsPromise={selectedOptionsPromise}
-          variantPromise={variantPromise}
-          locale={locale}
-        />
-      </div>
+
+      <Container className="pb-4">
+        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-start lg:gap-14">
+          <PdpGallery images={product.images} title={product.title} />
+          <ProductInfoArea
+            product={product}
+            selectedOptionsPromise={selectedOptionsPromise}
+            variantPromise={variantPromise}
+            locale={locale}
+            story={story}
+          />
+        </div>
+      </Container>
+
+      <SpecRow specs={story.specs} />
+      <KeyFeatures story={story} />
+      <EditorialTriptych productTitle={product.title} />
     </>
   );
-}
-
-function ProductMediaArea({
-  product,
-  selectedOptionsPromise,
-}: {
-  product: ProductDetails;
-  selectedOptionsPromise: Promise<SelectedOptions>;
-}) {
-  if (!hasColorImagePartitioning(product.options)) {
-    return (
-      <ProductMedia
-        otherImages={product.images}
-        videos={product.videos}
-        title={product.title}
-        className="lg:col-span-6"
-      />
-    );
-  }
-
-  return (
-    <ProductMedia
-      otherImages={getSharedImages(product.images, product.options)}
-      videos={product.videos}
-      title={product.title}
-      className="lg:col-span-6"
-      desktopSlot={
-        <Suspense fallback={<Skeleton className="w-full rounded-none aspect-square" />}>
-          <ResolvedColorImageGrid
-            product={product}
-            selectedOptionsPromise={selectedOptionsPromise}
-          />
-        </Suspense>
-      }
-      mobileSlot={
-        <Suspense
-          fallback={
-            <div className="relative shrink-0 w-full snap-start snap-always overflow-hidden aspect-square">
-              <Skeleton className="size-full rounded-none" />
-            </div>
-          }
-        >
-          <ResolvedColorImageCarousel
-            product={product}
-            selectedOptionsPromise={selectedOptionsPromise}
-          />
-        </Suspense>
-      }
-    />
-  );
-}
-
-async function ResolvedColorImageGrid({
-  product,
-  selectedOptionsPromise,
-}: {
-  product: ProductDetails;
-  selectedOptionsPromise: Promise<SelectedOptions>;
-}) {
-  const image = getSelectedColorImage(product, await selectedOptionsPromise);
-  if (!image) return null;
-  return <ColorImageGrid images={[image]} title={product.title} />;
-}
-
-async function ResolvedColorImageCarousel({
-  product,
-  selectedOptionsPromise,
-}: {
-  product: ProductDetails;
-  selectedOptionsPromise: Promise<SelectedOptions>;
-}) {
-  const image = getSelectedColorImage(product, await selectedOptionsPromise);
-  if (!image) return null;
-  return <ColorImageCarouselItems images={[image]} title={product.title} />;
 }
 
 async function ProductInfoArea({
@@ -156,13 +87,15 @@ async function ProductInfoArea({
   selectedOptionsPromise,
   variantPromise,
   locale,
+  story,
 }: {
   product: ProductDetails;
   selectedOptionsPromise: Promise<SelectedOptions>;
   variantPromise: Promise<ProductVariant | undefined>;
   locale: Locale;
+  story: ReturnType<typeof getProductStory>;
 }) {
-  const { options, handle, title, featuredImage, descriptionHtml, availableForSale } = product;
+  const { options, handle, title, featuredImage, availableForSale } = product;
   const uniformPrice = product.hasUniformPricing;
   const uniformStock = product.allVariantsInStock;
   const singleVariant = product.variantsCount === 1;
@@ -174,28 +107,56 @@ async function ProductInfoArea({
   const buyFallbackT = uniformStock && !singleVariant ? t : null;
   const allInStock = product.defaultVariant?.availableForSale ?? availableForSale;
 
+  const category = product.category?.name || product.manufacturerName || siteConfig.name;
+
   return (
-    <div className="grid gap-10 lg:sticky lg:top-20 lg:col-span-4">
-      <div data-slot="product-info-header">
-        <p className="eyebrow mb-3 text-muted-foreground">
-          {product.manufacturerName || siteConfig.name}
-        </p>
-        <h1 className="font-semibold text-foreground display text-4xl sm:text-5xl">{title}</h1>
-        <div className="mt-3">
+    <div className="grid gap-7 lg:sticky lg:top-20">
+      {/* Breadcrumb */}
+      <nav aria-label="Breadcrumb" className="eyebrow text-muted-foreground">
+        {siteConfig.name} / {category}
+      </nav>
+
+      <div data-slot="product-info-header" className="grid gap-4">
+        {/* Badges + chips */}
+        <div className="flex flex-wrap items-center gap-2">
+          {story.bestseller && (
+            <span className="bg-foreground px-2 py-1 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-background">
+              Bestseller
+            </span>
+          )}
+          {story.chips.map((chip) => (
+            <span
+              key={chip}
+              className="border border-border px-2 py-1 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted-foreground"
+            >
+              {chip}
+            </span>
+          ))}
+        </div>
+
+        <h1 className="display text-4xl font-semibold sm:text-5xl">{title}</h1>
+
+        <div>
           {uniformPrice ? (
-          <ProductPrice
-            amount={product.priceRange.minVariantPrice.amount}
-            currencyCode={product.priceRange.minVariantPrice.currencyCode}
-            compareAtAmount={product.compareAtPriceRange?.minVariantPrice.amount}
-            locale={locale}
-          />
-        ) : (
+            <ProductPrice
+              amount={product.priceRange.minVariantPrice.amount}
+              currencyCode={product.priceRange.minVariantPrice.currencyCode}
+              compareAtAmount={product.compareAtPriceRange?.minVariantPrice.amount}
+              locale={locale}
+            />
+          ) : (
             // h-7 matches the resolved price's text-xl line-height (1.75rem) — keep in sync to avoid CLS
             <Suspense fallback={<div className="h-7" aria-hidden />}>
               <ResolvedProductPrice variantPromise={variantPromise} locale={locale} />
             </Suspense>
           )}
         </div>
+
+        {product.description && (
+          <p className="max-w-prose text-pretty leading-relaxed text-muted-foreground">
+            {product.description}
+          </p>
+        )}
       </div>
 
       {eagerSelection ? (
@@ -251,8 +212,56 @@ async function ProductInfoArea({
 
       <BundleRelationships variant={product.defaultVariant} t={t} />
 
-      <ProductInfoDescription descriptionHtml={descriptionHtml} />
+      <ProductAccordions product={product} story={story} />
     </div>
+  );
+}
+
+function ProductAccordions({
+  product,
+  story,
+}: {
+  product: ProductDetails;
+  story: ReturnType<typeof getProductStory>;
+}) {
+  return (
+    <Accordion type="single" collapsible className="border-t border-border">
+      <AccordionItem value="size-fit">
+        <AccordionTrigger className="eyebrow">Size &amp; fit</AccordionTrigger>
+        <AccordionContent className="text-muted-foreground">
+          <p className="leading-relaxed">
+            Designed for a {story.specs[1]?.value.toLowerCase()} fit. True to size — if you&apos;re
+            between sizes, size up for a relaxed silhouette. Model is 185cm and wears a medium.
+          </p>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="shipping">
+        <AccordionTrigger className="eyebrow">Shipping &amp; returns</AccordionTrigger>
+        <AccordionContent className="text-muted-foreground">
+          <p className="leading-relaxed">
+            Free carbon-neutral shipping on all orders. Free 30-day returns — send it back in the
+            original condition for a full refund, no questions asked.
+          </p>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="materials">
+        <AccordionTrigger className="eyebrow">Materials &amp; transparency</AccordionTrigger>
+        <AccordionContent className="text-muted-foreground">
+          {product.descriptionHtml ? (
+            <div
+              className="prose prose-sm max-w-none leading-relaxed [&_a]:underline"
+              // descriptionHtml is sanitized server-side by the Shopify operations layer
+              dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+            />
+          ) : (
+            <p className="leading-relaxed">
+              Built from a {story.specs[3]?.value.toLowerCase()} chosen for performance and a lower
+              footprint.
+            </p>
+          )}
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }
 
@@ -388,18 +397,6 @@ function BuyButtonsFallback({
       </div>
       <div className="flex items-center justify-center rounded-lg h-12 bg-primary text-primary-foreground text-sm font-medium">
         {allInStock ? t("addToCart") : t("outOfStock")}
-      </div>
-    </div>
-  );
-}
-
-export function ProductDetailSectionSkeleton() {
-  return (
-    <div className="grid gap-10 lg:grid-cols-10 lg:items-start lg:gap-5">
-      <ProductMediaSkeleton className="lg:col-span-6" />
-      <div className="grid gap-10 lg:sticky lg:top-20 lg:col-span-4">
-        <Skeleton className="h-40 w-full" />
-        <Skeleton className="h-32 w-full" />
       </div>
     </div>
   );

@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ProductDetailSection } from "@/components/product-detail/product-detail-section";
-import { RelatedProductsSection } from "@/components/product/related-products-section";
-import { Container } from "@/components/ui/container";
+import { RelatedProductsSlider } from "@/components/product/related-products-slider";
+import { MissionBand } from "@/components/storefront/mission-band";
 import { Page } from "@/components/ui/page";
-import { Sections } from "@/components/ui/sections";
 import { getLocale } from "@/lib/params";
 import {
   defaultSelectedOptions,
@@ -113,18 +112,15 @@ export default async function ProductPage({
   });
 
   return (
-    <Page className="pt-0">
-      <Container className="bg-background">
-        <Sections>
-          <ProductDetailSection
-            product={product}
-            selectedOptionsPromise={selectedOptionsPromise}
-            variantPromise={variantPromise}
-            locale={locale}
-          />
-          <RelatedProductsSection handle={handle} locale={locale} />
-        </Sections>
-      </Container>
+    <Page className="pt-6 lg:pt-10">
+      <ProductDetailSection
+        product={product}
+        selectedOptionsPromise={selectedOptionsPromise}
+        variantPromise={variantPromise}
+        locale={locale}
+      />
+      <RelatedProductsSlider handle={handle} locale={locale} />
+      <MissionBand />
     </Page>
   );
 }
