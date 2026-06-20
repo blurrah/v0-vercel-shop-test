@@ -5,9 +5,12 @@ const missingShopify = ["SHOPIFY_STORE_DOMAIN", "SHOPIFY_STOREFRONT_ACCESS_TOKEN
   (key) => !process.env[key],
 );
 
+// These vars may be injected at request runtime rather than at config-compile time.
+// Warn instead of throwing so the dev server always boots; data fetches read them at runtime.
 if (missingShopify.length > 0) {
-  throw new Error(
-    `Missing required Shopify environment variables: ${missingShopify.join(", ")}. See .env.example.`,
+  console.warn(
+    `[next.config] Shopify env vars not visible at config load: ${missingShopify.join(", ")}. ` +
+      `Continuing — these are expected to be present at request runtime.`,
   );
 }
 

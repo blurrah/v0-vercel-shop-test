@@ -15,7 +15,7 @@ function Fallback() {
   return (
     <ProductsGridSkeleton
       count={RESULTS_PER_PAGE}
-      className="sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+      className="grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-3"
     />
   );
 }
@@ -49,6 +49,8 @@ async function Render({
       product={product}
       locale={locale}
       outOfStockText={tProduct("outOfStock")}
+      aspectRatio="portrait"
+      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 33vw"
     />
   ));
 

@@ -11,6 +11,7 @@ import { SortSelectFallback } from "@/components/collections/sort-select-fallbac
 import { CollectionToolbar } from "@/components/collections/toolbar";
 import { BreadcrumbSchema } from "@/components/schema/breadcrumb-schema";
 import { CollectionSchema } from "@/components/schema/collection-schema";
+import { MissionBand } from "@/components/storefront/mission-band";
 import { Container } from "@/components/ui/container";
 import { Page } from "@/components/ui/page";
 import { Sections } from "@/components/ui/sections";
@@ -89,6 +90,9 @@ export async function CollectionDetailPage({
             </FilterPendingScope>
           </Sections>
         </Container>
+        <div className="mt-16 md:mt-24">
+          <MissionBand />
+        </div>
       </Page>
     </FilterTransitionProvider>
   );

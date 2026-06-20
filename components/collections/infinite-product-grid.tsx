@@ -84,7 +84,7 @@ export function InfiniteProductGrid<TParams>({
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
         {children}
         {additionalProducts.map((product) => (
           <ClientProductCard
@@ -119,15 +119,16 @@ function ClientProductCard({
     : `/products/${product.handle}`;
 
   return (
-    <Link href={href} prefetch={true}>
+    <Link href={href} prefetch={true} className="group block">
       <ProductCardRoot>
         <ProductCardImageContainer>
           <ProductCardImage
             src={product.featuredImage?.url}
             alt={product.featuredImage?.altText || product.title}
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 33vw"
             outOfStock={!product.availableForSale}
             outOfStockText={outOfStockText}
+            aspectRatio="portrait"
           />
           <ProductCardContent>
             <ProductCardTitle>{product.title}</ProductCardTitle>
