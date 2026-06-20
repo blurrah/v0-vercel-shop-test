@@ -6,12 +6,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   ProductCardContent,
+  ProductCardEyebrow,
   ProductCardImage,
   ProductCardImageContainer,
   ProductCardPrice,
   ProductCardTitle,
   ProductCard as ProductCardRoot,
 } from "@/components/product-card/components";
+import { seededBestseller } from "@/lib/product-specs";
 import type { PageInfo, ProductCard } from "@/lib/types";
 
 interface InfiniteProductGridProps<TParams> {
@@ -117,6 +119,7 @@ function ClientProductCard({
   const href = product.defaultVariantNumericId
     ? `/products/${product.handle}?variant=${product.defaultVariantNumericId}`
     : `/products/${product.handle}`;
+  const flag = seededBestseller(product.handle) ? "Bestseller" : undefined;
 
   return (
     <Link href={href} prefetch={true} className="group block">
@@ -129,8 +132,10 @@ function ClientProductCard({
             outOfStock={!product.availableForSale}
             outOfStockText={outOfStockText}
             aspectRatio="portrait"
+            flag={flag}
           />
           <ProductCardContent>
+            <ProductCardEyebrow>{product.vendor}</ProductCardEyebrow>
             <ProductCardTitle>{product.title}</ProductCardTitle>
             <ProductCardPrice
               amount={product.price.amount}

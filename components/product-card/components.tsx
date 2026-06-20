@@ -69,6 +69,8 @@ interface ProductCardImageProps {
   outOfStock?: boolean;
   outOfStockText?: string;
   aspectRatio?: ProductCardAspectRatio;
+  /** Optional On-style coral flag (e.g. "Bestseller") overlaid top-left. */
+  flag?: string;
   className?: string;
 }
 
@@ -79,6 +81,7 @@ function ProductCardImage({
   outOfStock = false,
   outOfStockText,
   aspectRatio = "square",
+  flag,
   className,
 }: ProductCardImageProps) {
   return (
@@ -102,6 +105,11 @@ function ProductCardImage({
       ) : (
         <ImagePlaceholder className="size-full" />
       )}
+      {flag && (
+        <span className="absolute left-3 top-3 z-10 bg-flag px-2 py-1 font-mono text-[0.625rem] uppercase tracking-[0.15em] text-flag-foreground">
+          {flag}
+        </span>
+      )}
       {outOfStock && (
         <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
           <span className="text-destructive-foreground font-medium text-xs px-2 py-1 bg-destructive rounded">
@@ -117,11 +125,27 @@ function ProductCardContent({ className, children, ...props }: React.ComponentPr
   return (
     <div
       data-slot="product-card-content"
-      className={cn("flex flex-col flex-1 py-2.5", className)}
+      className={cn("flex flex-1 flex-col gap-1 pt-3", className)}
       {...props}
     >
       {children}
     </div>
+  );
+}
+
+function ProductCardEyebrow({ className, children, ...props }: React.ComponentProps<"span">) {
+  if (!children) return null;
+  return (
+    <span
+      data-slot="product-card-eyebrow"
+      className={cn(
+        "font-mono text-[0.625rem] uppercase tracking-[0.15em] text-muted-foreground",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </span>
   );
 }
 
@@ -223,6 +247,7 @@ export {
   type ProductCardAspectRatio,
   ProductCardBadge,
   ProductCardContent,
+  ProductCardEyebrow,
   ProductCardImage,
   ProductCardImageContainer,
   ProductCardPrice,

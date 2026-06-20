@@ -17,6 +17,14 @@ function pick<T>(seed: string, salt: string, options: T[]): T {
   return options[Math.min(idx, options.length - 1)];
 }
 
+/**
+ * Lightweight, deterministic "bestseller" flag for product cards (no full ProductDetails
+ * needed). Roughly the top third of products carry the flag, stable per handle.
+ */
+export function seededBestseller(seed: string): boolean {
+  return seededValue(seed, "best") > 0.66;
+}
+
 export interface ProductSpec {
   label: string;
   value: string;

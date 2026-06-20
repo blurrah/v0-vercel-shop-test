@@ -10,6 +10,10 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-shop: #5A31F4;
+  /* On-style coral accent — used sparingly for flags and editorial rules */
+  --color-flag: #ec5a35;
+  --color-flag-foreground: #ffffff;
+  --color-flag-soft: #f7d6c6;
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --text-xxs: 0.625rem;

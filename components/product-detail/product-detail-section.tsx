@@ -24,7 +24,7 @@ import { getAvailableOptionValues } from "@/lib/shopify/encoded-variants";
 import type { ProductDetails, ProductVariant } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-import { EditorialTriptych, KeyFeatures, SpecRow } from "./pdp-story";
+import { EditorialCollage, KeyFeatures, PerformanceStory, SpecRow } from "./pdp-story";
 
 export function ProductDetailSection({
   product,
@@ -77,7 +77,8 @@ export function ProductDetailSection({
 
       <SpecRow specs={story.specs} />
       <KeyFeatures story={story} />
-      <EditorialTriptych productTitle={product.title} />
+      <PerformanceStory story={story} />
+      <EditorialCollage productTitle={product.title} story={story} />
     </>
   );
 }

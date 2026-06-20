@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
 import type { Locale } from "@/lib/i18n";
+import { seededBestseller } from "@/lib/product-specs";
 import type { ProductCard as ProductCardType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -9,6 +10,7 @@ import {
   type ProductCardAspectRatio,
   ProductCardBadge,
   ProductCardContent,
+  ProductCardEyebrow,
   ProductCardImage,
   ProductCardImageContainer,
   ProductCardPrice,
@@ -38,6 +40,8 @@ export async function ProductCard({
 }: ProductCardProps) {
   const isFeatured = variant === "featured";
   const t = isFeatured ? await getTranslations("product") : null;
+  // Featured cards carry their own badge; show the coral bestseller flag only on default cards.
+  const flag = !isFeatured && seededBestseller(product.handle) ? "Bestseller" : undefined;
 
   return (
     <Link
@@ -61,8 +65,10 @@ export async function ProductCard({
             outOfStock={!product.availableForSale}
             outOfStockText={outOfStockText}
             aspectRatio={aspectRatio}
+            flag={flag}
           />
           <ProductCardContent>
+            <ProductCardEyebrow>{product.vendor}</ProductCardEyebrow>
             <ProductCardTitle>{product.title}</ProductCardTitle>
             <ProductCardPrice
               amount={product.price.amount}
