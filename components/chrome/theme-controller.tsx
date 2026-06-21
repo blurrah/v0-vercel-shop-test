@@ -35,12 +35,15 @@ export function ThemeController() {
 
     const startViewTransition = (
       document as Document & {
-        startViewTransition?: (cb: () => void) => void;
+        startViewTransition?: (cb: () => void) => { finished?: Promise<void> };
       }
     ).startViewTransition?.bind(document);
 
     if (startViewTransition && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      startViewTransition(() => applyTheme(theme));
+      const transition = startViewTransition(() => applyTheme(theme));
+      // A rapid second navigation skips the in-flight transition, rejecting
+      // `finished` with an AbortError. That's expected — swallow it.
+      transition?.finished?.catch(() => {});
     } else {
       applyTheme(theme);
     }
