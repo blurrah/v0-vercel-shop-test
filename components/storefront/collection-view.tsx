@@ -29,12 +29,13 @@ export async function CollectionView({
 }: CollectionViewProps) {
   const data = await collectionResultsDataPromise;
   const products = data.result.products;
+  const count = data.result.totalCount ?? products.length;
 
   return (
     <div className="space-y-6 pt-2">
       <header className="overflow-hidden rounded-[2rem] bg-primary px-6 py-7 text-ink">
         <p className="text-xs font-semibold uppercase tracking-wider text-ink/60">
-          {data.result.totalCount} styles
+          {count} styles
         </p>
         <h1 className="mt-1 font-display text-3xl font-semibold tracking-tight text-balance">
           {collection.title}
