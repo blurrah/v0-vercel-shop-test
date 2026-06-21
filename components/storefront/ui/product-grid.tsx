@@ -33,7 +33,12 @@ const shapes = [
  */
 export function ProductGrid({ products, locale, outOfStockText, className }: ProductGridProps) {
   return (
-    <div className={cn("grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3", className)}>
+    <div
+      className={cn(
+        "grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-10 xl:grid-cols-5",
+        className,
+      )}
+    >
       {products.map((product, index) => (
         <ProductCard
           key={product.id}
@@ -41,7 +46,7 @@ export function ProductGrid({ products, locale, outOfStockText, className }: Pro
           locale={locale}
           outOfStockText={outOfStockText}
           aspectRatio="portrait"
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 280px"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 240px"
           className={cn(
             "group block",
             "[&_[data-slot=product-card-image]_img]:transition-transform [&_[data-slot=product-card-image]_img]:duration-500 group-hover:[&_[data-slot=product-card-image]_img]:scale-105",

@@ -67,7 +67,7 @@ export async function HomeView({ locale, products }: HomeViewProps) {
       {/* Hero — big editorial photo with a playful asymmetric silhouette */}
       <section className="relative">
         <div className="relative overflow-hidden rounded-[5rem_1.5rem_5rem_1.5rem] bg-accent">
-          <div className="relative aspect-[4/5] w-full sm:aspect-[16/10]">
+          <div className="relative aspect-[4/5] w-full sm:aspect-[16/10] lg:aspect-[21/9]">
             <Image
               src="/lifestyle/hero-summer.png"
               alt="Two children playing in colorful summer clothing"
@@ -107,7 +107,7 @@ export async function HomeView({ locale, products }: HomeViewProps) {
         <div className="mb-4 flex items-end justify-between">
           <h2 className="font-display text-2xl font-semibold tracking-tight">Shop by category</h2>
         </div>
-        <div className="grid grid-cols-2 gap-x-4 gap-y-10">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-4 lg:gap-x-6">
           {collections.map((c) => (
             <Link
               key={c.handle}
@@ -121,7 +121,7 @@ export async function HomeView({ locale, products }: HomeViewProps) {
                   src={c.image}
                   alt={`${c.title} collection`}
                   fill
-                  sizes="(max-width: 768px) 50vw, 360px"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 300px"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
@@ -186,16 +186,16 @@ export async function HomeView({ locale, products }: HomeViewProps) {
 export function HomeViewFallback({ locale: _locale }: { locale: Locale }) {
   return (
     <div className="space-y-12 pt-2">
-      <div className="aspect-[4/5] animate-pulse rounded-[5rem_1.5rem_5rem_1.5rem] bg-accent sm:aspect-[16/10]" />
-      <div className="grid grid-cols-2 gap-x-4 gap-y-10">
+      <div className="aspect-[4/5] animate-pulse rounded-[5rem_1.5rem_5rem_1.5rem] bg-accent sm:aspect-[16/10] lg:aspect-[21/9]" />
+      <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-4 lg:gap-x-6">
         {["rounded-t-[6rem] rounded-b-[1.75rem] aspect-[4/5]", "blob aspect-square", "rounded-full aspect-square", "rounded-[2.75rem_0.85rem_2.75rem_0.85rem] aspect-[4/5]"].map(
           (shape, i) => (
             <div key={i} className={`animate-pulse bg-accent ${shape}`} />
           ),
         )}
       </div>
-      <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3">
-        {Array.from({ length: 6 }).map((_, i) => (
+      <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        {Array.from({ length: 10 }).map((_, i) => (
           <div key={i} className="aspect-[3/4] animate-pulse rounded-[1.75rem] bg-accent" />
         ))}
       </div>

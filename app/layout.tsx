@@ -48,7 +48,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             </Suspense>
             <ThemeController />
             <TopBar />
-            <main id="main-content" className="mx-auto max-w-screen-md px-4 pb-32">
+            <main
+              id="main-content"
+              className="mx-auto max-w-screen-xl px-4 pb-32 sm:px-6 lg:px-8"
+            >
               {children}
             </main>
             <BottomNav />
