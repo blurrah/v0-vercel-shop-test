@@ -1,59 +1,18 @@
 "use client";
 
-import { Bell, ChevronLeft, Search } from "lucide-react";
+import { Search, ShoppingBag, User } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-
-const titles: Array<[RegExp, string]> = [
-  [/^\/$/, "Home"],
-  [/^\/collections\/all/, "Shop All"],
-  [/^\/collections\/new-arrivals/, "New Arrivals"],
-  [/^\/collections\/girls/, "Girls"],
-  [/^\/collections\/boys/, "Boys"],
-  [/^\/collections\/baby/, "Baby & Toddler"],
-  [/^\/collections/, "Collection"],
-  [/^\/products/, ""],
-  [/^\/search/, "Search"],
-  [/^\/cart/, "Your Bag"],
-  [/^\/account/, "Account"],
-  [/^\/about/, "About"],
-];
-
-function titleFor(pathname: string): string {
-  return titles.find(([re]) => re.test(pathname))?.[1] ?? "Pippin";
-}
 
 export function TopBar() {
-  const pathname = usePathname();
-  const router = useRouter();
-  const isHome = pathname === "/";
-
   return (
-    <header className="sticky top-0 z-30 px-4 pt-[max(env(safe-area-inset-top,0px),0.75rem)]">
-      <div className="mx-auto flex max-w-screen-md items-center justify-between gap-3 py-2">
-        {isHome ? (
-          <Link
-            href="/"
-            className="font-display text-2xl font-semibold tracking-tight text-ink"
-          >
-            Pippin
-          </Link>
-        ) : (
-          <button
-            type="button"
-            onClick={() => router.back()}
-            aria-label="Go back"
-            className="flex size-10 items-center justify-center rounded-full bg-card text-ink shadow-sm ring-1 ring-border transition-transform active:scale-95"
-          >
-            <ChevronLeft className="size-5" strokeWidth={2.5} />
-          </button>
-        )}
-
-        {!isHome && titleFor(pathname) && (
-          <span className="font-display text-lg font-semibold text-ink">
-            {titleFor(pathname)}
-          </span>
-        )}
+    <header className="sticky top-0 z-30 px-4 pt-[max(env(safe-area-inset-top,0px),0.75rem)] sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-3 py-2">
+        <Link
+          href="/"
+          className="font-display text-2xl font-semibold tracking-tight text-ink"
+        >
+          Pippin
+        </Link>
 
         <div className="flex items-center gap-2">
           <Link
@@ -65,10 +24,17 @@ export function TopBar() {
           </Link>
           <Link
             href="/account"
-            aria-label="Notifications"
+            aria-label="Account"
+            className="flex size-10 items-center justify-center rounded-full bg-card text-ink shadow-sm ring-1 ring-border transition-transform active:scale-95"
+          >
+            <User className="size-5" strokeWidth={2.25} />
+          </Link>
+          <Link
+            href="/cart"
+            aria-label="Bag"
             className="flex size-10 items-center justify-center rounded-full bg-primary text-ink shadow-sm transition-transform active:scale-95"
           >
-            <Bell className="size-5" strokeWidth={2.25} />
+            <ShoppingBag className="size-5" strokeWidth={2.25} />
           </Link>
         </div>
       </div>
