@@ -42,8 +42,8 @@ const perks = [
     label: "Grown soft",
     note: "100% organic cotton, kind to the littlest skin.",
     fill: "bg-pop-green",
-    shape: "rounded-[2.5rem_2.5rem_2.5rem_0.75rem]",
-    span: "col-span-2 sm:col-span-3",
+    shape: "rounded-[2.75rem_2.75rem_0.85rem_2.75rem]",
+    span: "col-span-2 sm:col-span-4",
     rotate: "-rotate-1",
   },
   {
@@ -51,26 +51,26 @@ const perks = [
     label: "Mud-proof",
     note: "Wash cold, tumble low, repeat forever.",
     fill: "bg-pop-blue",
-    shape: "rounded-full",
+    shape: "rounded-[2.75rem_0.85rem_2.75rem_2.75rem]",
     span: "col-span-1 sm:col-span-2",
-    rotate: "rotate-2",
+    rotate: "rotate-1",
   },
   {
     icon: Heart,
     label: "Kid-tested",
     note: "Climbed, spun & snack-spilled approved.",
     fill: "bg-pop-pink",
-    shape: "blob",
+    shape: "rounded-[0.85rem_2.75rem_2.75rem_2.75rem]",
     span: "col-span-1 sm:col-span-2",
-    rotate: "-rotate-2",
+    rotate: "-rotate-1",
   },
   {
     icon: Truck,
     label: "Easy returns",
     note: "Changed your mind? 30 days, zero fuss.",
     fill: "bg-pop-yellow",
-    shape: "rounded-[0.75rem_2.5rem_2.5rem_2.5rem]",
-    span: "col-span-2 sm:col-span-3",
+    shape: "rounded-[2.75rem_2.75rem_2.75rem_0.85rem]",
+    span: "col-span-2 sm:col-span-4",
     rotate: "rotate-1",
   },
 ];
@@ -127,23 +127,28 @@ export async function ProductView({
           </span>
         </div>
 
-        <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-5">
+        <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-6 sm:auto-rows-fr">
           {perks.map((perk) => (
             <div
               key={perk.label}
-              className={`group relative flex aspect-square flex-col justify-between overflow-hidden p-5 text-ink shadow-sm transition-transform duration-300 hover:-translate-y-1 sm:aspect-auto sm:min-h-44 ${perk.fill} ${perk.shape} ${perk.span} ${perk.rotate}`}
+              className={`group relative flex min-h-36 flex-col justify-between gap-6 overflow-hidden p-5 text-ink shadow-sm transition-transform duration-300 hover:-translate-y-1 sm:min-h-0 sm:p-6 ${perk.fill} ${perk.shape} ${perk.span} ${perk.rotate}`}
             >
-              {/* faint oversized icon watermark */}
+              {/* faint oversized icon watermark, kept clear of the text */}
               <perk.icon
-                className="pointer-events-none absolute -bottom-4 -right-3 size-28 text-ink/10"
+                className="pointer-events-none absolute -right-5 -top-5 size-28 text-ink/10 sm:size-32"
                 strokeWidth={1.5}
+                aria-hidden
               />
-              <perk.icon className="relative size-7 shrink-0" strokeWidth={2.25} />
+              <span className="relative flex size-11 items-center justify-center rounded-full bg-background/40 ring-1 ring-ink/5">
+                <perk.icon className="size-5" strokeWidth={2.25} />
+              </span>
               <div className="relative">
-                <p className="font-display text-xl font-semibold leading-none tracking-tight">
+                <p className="font-display text-xl font-semibold leading-tight tracking-tight text-balance">
                   {perk.label}
                 </p>
-                <p className="mt-1.5 text-sm leading-snug text-ink/70">{perk.note}</p>
+                <p className="mt-1.5 max-w-[24ch] text-sm leading-snug text-ink/70 text-pretty">
+                  {perk.note}
+                </p>
               </div>
             </div>
           ))}
