@@ -37,10 +37,42 @@ const stageClasses = [
 ].join(" ");
 
 const perks = [
-  { icon: Leaf, label: "Organic cotton", note: "Soft & breathable", tint: "bg-pop-green/35" },
-  { icon: Droplets, label: "Machine washable", note: "Wash cold, tumble low", tint: "bg-pop-blue/35" },
-  { icon: Truck, label: "Free returns", note: "30 days, no fuss", tint: "bg-pop-yellow/45" },
-  { icon: Heart, label: "Built for play", note: "Tested by real kids", tint: "bg-pop-pink/35" },
+  {
+    icon: Leaf,
+    label: "Grown soft",
+    note: "100% organic cotton, kind to the littlest skin.",
+    fill: "bg-pop-green",
+    shape: "rounded-[2.5rem_2.5rem_2.5rem_0.75rem]",
+    span: "col-span-2 sm:col-span-3",
+    rotate: "-rotate-1",
+  },
+  {
+    icon: Droplets,
+    label: "Mud-proof",
+    note: "Wash cold, tumble low, repeat forever.",
+    fill: "bg-pop-blue",
+    shape: "rounded-full",
+    span: "col-span-1 sm:col-span-2",
+    rotate: "rotate-2",
+  },
+  {
+    icon: Heart,
+    label: "Kid-tested",
+    note: "Climbed, spun & snack-spilled approved.",
+    fill: "bg-pop-pink",
+    shape: "blob",
+    span: "col-span-1 sm:col-span-2",
+    rotate: "-rotate-2",
+  },
+  {
+    icon: Truck,
+    label: "Easy returns",
+    note: "Changed your mind? 30 days, zero fuss.",
+    fill: "bg-pop-yellow",
+    shape: "rounded-[0.75rem_2.5rem_2.5rem_2.5rem]",
+    span: "col-span-2 sm:col-span-3",
+    rotate: "rotate-1",
+  },
 ];
 
 export async function ProductView({
@@ -84,26 +116,38 @@ export async function ProductView({
         </div>
       </section>
 
-      {/* Perks band — playful reassurance cards */}
-      <section className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-        {perks.map((perk, i) => (
-          <div
-            key={perk.label}
-            className="flex flex-col gap-2 rounded-[1.75rem] bg-card p-4 shadow-sm ring-1 ring-border"
-          >
-            <span
-              className={`flex size-11 items-center justify-center rounded-2xl ${perk.tint} ${
-                i % 2 === 0 ? "-rotate-3" : "rotate-3"
-              }`}
+      {/* The Pippin promise — playful asymmetric collage */}
+      <section>
+        <div className="flex items-end justify-between gap-3">
+          <h2 className="max-w-xs font-display text-2xl font-semibold leading-tight tracking-tight text-ink text-balance sm:text-3xl">
+            Made for <span className="italic">real</span> childhoods
+          </h2>
+          <span className="hidden shrink-0 rotate-3 rounded-full bg-ink px-3 py-1 text-xs font-bold text-background sm:inline-block">
+            the Pippin promise
+          </span>
+        </div>
+
+        <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-5">
+          {perks.map((perk) => (
+            <div
+              key={perk.label}
+              className={`group relative flex aspect-square flex-col justify-between overflow-hidden p-5 text-ink shadow-sm transition-transform duration-300 hover:-translate-y-1 sm:aspect-auto sm:min-h-44 ${perk.fill} ${perk.shape} ${perk.span} ${perk.rotate}`}
             >
-              <perk.icon className="size-5 text-ink" strokeWidth={2} />
-            </span>
-            <span className="font-display text-base font-semibold leading-tight text-ink">
-              {perk.label}
-            </span>
-            <span className="text-xs text-ink/60">{perk.note}</span>
-          </div>
-        ))}
+              {/* faint oversized icon watermark */}
+              <perk.icon
+                className="pointer-events-none absolute -bottom-4 -right-3 size-28 text-ink/10"
+                strokeWidth={1.5}
+              />
+              <perk.icon className="relative size-7 shrink-0" strokeWidth={2.25} />
+              <div className="relative">
+                <p className="font-display text-xl font-semibold leading-none tracking-tight">
+                  {perk.label}
+                </p>
+                <p className="mt-1.5 text-sm leading-snug text-ink/70">{perk.note}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* The details — specs in a playful panel */}
