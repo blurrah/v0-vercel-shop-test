@@ -38,40 +38,32 @@ const stageClasses = [
 
 const perks = [
   {
+    n: "01",
     icon: Leaf,
     label: "Grown soft",
-    note: "100% organic cotton, kind to the littlest skin.",
-    fill: "bg-pop-green",
-    shape: "rounded-[2.75rem_2.75rem_0.85rem_2.75rem]",
-    span: "col-span-2 sm:col-span-4",
-    rotate: "-rotate-1",
+    note: "Spun from 100% organic cotton — no nasties, just the kind of softness that survives a thousand washes and still feels like a hug.",
+    badge: "bg-pop-green rounded-[1.4rem_1.4rem_1.4rem_0.4rem]",
   },
   {
+    n: "02",
     icon: Droplets,
-    label: "Mud-proof",
-    note: "Wash cold, tumble low, repeat forever.",
-    fill: "bg-pop-blue",
-    shape: "rounded-[2.75rem_0.85rem_2.75rem_2.75rem]",
-    span: "col-span-1 sm:col-span-2",
-    rotate: "rotate-1",
+    label: "Mud-proof & machine-friendly",
+    note: "Spaghetti night, finger paint, the occasional puddle dive. Wash cold, tumble low, and it bounces right back.",
+    badge: "bg-pop-blue rounded-full",
   },
   {
+    n: "03",
     icon: Heart,
-    label: "Kid-tested",
-    note: "Climbed, spun & snack-spilled approved.",
-    fill: "bg-pop-pink",
-    shape: "rounded-[0.85rem_2.75rem_2.75rem_2.75rem]",
-    span: "col-span-1 sm:col-span-2",
-    rotate: "-rotate-1",
+    label: "Kid-tested, kid-approved",
+    note: "Every style is climbed, spun and snack-spilled by real kids before it ever reaches yours.",
+    badge: "bg-pop-pink rounded-[0.4rem_1.4rem_1.4rem_1.4rem]",
   },
   {
+    n: "04",
     icon: Truck,
-    label: "Easy returns",
-    note: "Changed your mind? 30 days, zero fuss.",
-    fill: "bg-pop-yellow",
-    shape: "rounded-[2.75rem_2.75rem_2.75rem_0.85rem]",
-    span: "col-span-2 sm:col-span-4",
-    rotate: "rotate-1",
+    label: "Free, fuss-free returns",
+    note: "Sizes are sneaky at this age. Send anything back within 30 days, on us — no forms, no frowns.",
+    badge: "bg-pop-yellow rounded-[1.4rem_0.4rem_1.4rem_1.4rem]",
   },
 ];
 
@@ -116,43 +108,47 @@ export async function ProductView({
         </div>
       </section>
 
-      {/* The Pippin promise — playful asymmetric collage */}
-      <section>
-        <div className="flex items-end justify-between gap-3">
-          <h2 className="max-w-xs font-display text-2xl font-semibold leading-tight tracking-tight text-ink text-balance sm:text-3xl">
-            Made for <span className="italic">real</span> childhoods
-          </h2>
-          <span className="hidden shrink-0 rotate-3 rounded-full bg-ink px-3 py-1 text-xs font-bold text-background sm:inline-block">
+      {/* The Pippin promise — editorial split: bold statement + tight perk rows */}
+      <section className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12">
+        <div className="lg:sticky lg:top-24 lg:self-start">
+          <span className="inline-flex rotate-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase tracking-wide text-background">
             the Pippin promise
           </span>
+          <h2 className="mt-4 font-display text-4xl font-semibold leading-[0.98] tracking-tight text-ink text-balance sm:text-5xl">
+            Made for the <span className="italic text-primary">messy, magic</span> bits of growing up.
+          </h2>
+          <p className="mt-4 max-w-md text-pretty leading-relaxed text-ink/70">
+            We obsess over the things you can&apos;t see on a hanger — the give in a seam,
+            the softness after wash number forty, the way a hem survives the slide. Here&apos;s
+            what goes into every Pippin piece.
+          </p>
         </div>
 
-        <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-6 sm:auto-rows-fr">
-          {perks.map((perk) => (
-            <div
+        <ul className="-mt-2">
+          {perks.map((perk, i) => (
+            <li
               key={perk.label}
-              className={`group relative flex min-h-36 flex-col justify-between gap-6 overflow-hidden p-5 text-ink shadow-sm transition-transform duration-300 hover:-translate-y-1 sm:min-h-0 sm:p-6 ${perk.fill} ${perk.shape} ${perk.span} ${perk.rotate}`}
+              className={`group flex items-start gap-4 py-5 sm:gap-6 ${
+                i > 0 ? "border-t border-ink/10" : ""
+              }`}
             >
-              {/* faint oversized icon watermark, kept clear of the text */}
-              <perk.icon
-                className="pointer-events-none absolute -right-5 -top-5 size-28 text-ink/10 sm:size-32"
-                strokeWidth={1.5}
-                aria-hidden
-              />
-              <span className="relative flex size-11 items-center justify-center rounded-full bg-background/40 ring-1 ring-ink/5">
-                <perk.icon className="size-5" strokeWidth={2.25} />
+              <span
+                className={`flex size-14 shrink-0 items-center justify-center text-ink shadow-sm transition-transform duration-300 group-hover:-rotate-6 sm:size-16 ${perk.badge}`}
+              >
+                <perk.icon className="size-6 sm:size-7" strokeWidth={2.25} />
               </span>
-              <div className="relative">
-                <p className="font-display text-xl font-semibold leading-tight tracking-tight text-balance">
-                  {perk.label}
-                </p>
-                <p className="mt-1.5 max-w-[24ch] text-sm leading-snug text-ink/70 text-pretty">
-                  {perk.note}
-                </p>
+              <div className="flex-1 pt-0.5">
+                <div className="flex items-baseline gap-2.5">
+                  <span className="font-display text-xs font-bold text-ink/30">{perk.n}</span>
+                  <h3 className="font-display text-xl font-semibold leading-tight tracking-tight text-ink sm:text-2xl">
+                    {perk.label}
+                  </h3>
+                </div>
+                <p className="mt-1.5 text-pretty leading-relaxed text-ink/70">{perk.note}</p>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       {/* The details — specs in a playful panel */}
