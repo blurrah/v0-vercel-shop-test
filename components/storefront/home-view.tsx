@@ -19,6 +19,10 @@ const collections = [
     blurb: "Twirl-ready",
     image: "/lifestyle/collection-girls.png",
     tint: "bg-pop-pink/30",
+    // tall arch
+    shape: "rounded-t-[6rem] rounded-b-[1.75rem]",
+    ratio: "aspect-[4/5]",
+    badge: "bg-pop-pink -rotate-3",
   },
   {
     handle: "boys",
@@ -26,6 +30,10 @@ const collections = [
     blurb: "Adventure-proof",
     image: "/lifestyle/collection-boys.png",
     tint: "bg-pop-blue/30",
+    // organic blob
+    shape: "blob",
+    ratio: "aspect-square",
+    badge: "bg-pop-blue rotate-2",
   },
   {
     handle: "baby",
@@ -33,6 +41,10 @@ const collections = [
     blurb: "Soft & snuggly",
     image: "/lifestyle/collection-baby.png",
     tint: "bg-pop-green/30",
+    // pure circle
+    shape: "rounded-full",
+    ratio: "aspect-square",
+    badge: "bg-pop-green rotate-3",
   },
   {
     handle: "new-arrivals",
@@ -40,6 +52,10 @@ const collections = [
     blurb: "Fresh drops",
     image: "/lifestyle/collection-new.png",
     tint: "bg-pop-yellow/40",
+    // asymmetric squircle
+    shape: "rounded-[2.75rem_0.85rem_2.75rem_0.85rem]",
+    ratio: "aspect-[4/5]",
+    badge: "bg-pop-yellow -rotate-2",
   },
 ];
 
@@ -48,32 +64,41 @@ export async function HomeView({ locale, products }: HomeViewProps) {
 
   return (
     <div className="space-y-12 pt-2">
-      {/* Hero — big editorial photo */}
-      <section className="relative overflow-hidden rounded-[2rem] bg-accent">
-        <div className="relative aspect-[4/5] w-full sm:aspect-[16/10]">
-          <Image
-            src="/lifestyle/hero-summer.png"
-            alt="Two children playing in colorful summer clothing"
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, 768px"
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink/55 via-ink/10 to-transparent" />
+      {/* Hero — big editorial photo with a playful asymmetric silhouette */}
+      <section className="relative">
+        <div className="relative overflow-hidden rounded-[5rem_1.5rem_5rem_1.5rem] bg-accent">
+          <div className="relative aspect-[4/5] w-full sm:aspect-[16/10]">
+            <Image
+              src="/lifestyle/hero-summer.png"
+              alt="Two children playing in colorful summer clothing"
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 768px"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/55 via-ink/10 to-transparent" />
+          </div>
+          <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+            <span className="inline-flex items-center rounded-full bg-background/90 px-3 py-1 text-xs font-semibold text-ink backdrop-blur">
+              Summer collection
+            </span>
+            <h1 className="mt-3 max-w-md font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-background sm:text-5xl">
+              Little styles for <span className="italic">big adventures</span>
+            </h1>
+            <Link
+              href="/collections/all"
+              className="mt-5 inline-flex items-center gap-2 rounded-full bg-background px-5 py-3 text-sm font-semibold text-ink transition-transform hover:scale-105 active:scale-95"
+            >
+              Shop the collection <ArrowRight className="size-4" />
+            </Link>
+          </div>
         </div>
-        <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
-          <span className="inline-flex items-center rounded-full bg-background/90 px-3 py-1 text-xs font-semibold text-ink backdrop-blur">
-            Summer collection
+        {/* Floating circular sticker accent */}
+        <div className="absolute -right-1 -top-4 flex size-24 rotate-12 flex-col items-center justify-center rounded-full bg-pop-yellow text-center shadow-md ring-4 ring-background sm:size-28">
+          <span className="font-display text-lg font-bold leading-none text-ink">-20%</span>
+          <span className="mt-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-ink/70">
+            new in
           </span>
-          <h1 className="mt-3 max-w-md font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-background sm:text-5xl">
-            Little styles for <span className="italic">big adventures</span>
-          </h1>
-          <Link
-            href="/collections/all"
-            className="mt-5 inline-flex items-center gap-2 rounded-full bg-background px-5 py-3 text-sm font-semibold text-ink transition-transform hover:scale-105 active:scale-95"
-          >
-            Shop the collection <ArrowRight className="size-4" />
-          </Link>
         </div>
       </section>
 
@@ -82,14 +107,16 @@ export async function HomeView({ locale, products }: HomeViewProps) {
         <div className="mb-4 flex items-end justify-between">
           <h2 className="font-display text-2xl font-semibold tracking-tight">Shop by category</h2>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-10">
           {collections.map((c) => (
             <Link
               key={c.handle}
               href={`/collections/${c.handle}`}
-              className="group relative overflow-hidden rounded-[1.75rem]"
+              className="group flex flex-col items-center"
             >
-              <div className={`relative aspect-[4/5] w-full ${c.tint}`}>
+              <div
+                className={`relative w-full overflow-hidden ${c.ratio} ${c.shape} ${c.tint}`}
+              >
                 <Image
                   src={c.image}
                   alt={`${c.title} collection`}
@@ -97,13 +124,14 @@ export async function HomeView({ locale, products }: HomeViewProps) {
                   sizes="(max-width: 768px) 50vw, 360px"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/45 to-transparent" />
               </div>
-              <div className="absolute inset-x-0 bottom-0 p-4">
-                <span className="block text-xs font-medium text-background/80">{c.blurb}</span>
-                <span className="font-display text-2xl font-semibold tracking-tight text-background">
+              <div
+                className={`-mt-4 flex flex-col items-center rounded-2xl px-4 py-1.5 text-center shadow-sm ring-1 ring-ink/5 transition-transform group-hover:scale-105 ${c.badge}`}
+              >
+                <span className="font-display text-xl font-semibold leading-none tracking-tight text-ink">
                   {c.title}
                 </span>
+                <span className="text-[0.7rem] font-medium text-ink/70">{c.blurb}</span>
               </div>
             </Link>
           ))}
@@ -131,7 +159,7 @@ export async function HomeView({ locale, products }: HomeViewProps) {
       </section>
 
       {/* Story band — big editorial photo */}
-      <section className="relative overflow-hidden rounded-[2rem]">
+      <section className="relative overflow-hidden rounded-[1.5rem_5rem_1.5rem_5rem]">
         <div className="relative aspect-[16/11] w-full sm:aspect-[16/8]">
           <Image
             src="/lifestyle/story-play.png"
@@ -158,11 +186,13 @@ export async function HomeView({ locale, products }: HomeViewProps) {
 export function HomeViewFallback({ locale: _locale }: { locale: Locale }) {
   return (
     <div className="space-y-12 pt-2">
-      <div className="aspect-[4/5] animate-pulse rounded-[2rem] bg-accent sm:aspect-[16/10]" />
-      <div className="grid grid-cols-2 gap-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="aspect-[4/5] animate-pulse rounded-[1.75rem] bg-accent" />
-        ))}
+      <div className="aspect-[4/5] animate-pulse rounded-[5rem_1.5rem_5rem_1.5rem] bg-accent sm:aspect-[16/10]" />
+      <div className="grid grid-cols-2 gap-x-4 gap-y-10">
+        {["rounded-t-[6rem] rounded-b-[1.75rem] aspect-[4/5]", "blob aspect-square", "rounded-full aspect-square", "rounded-[2.75rem_0.85rem_2.75rem_0.85rem] aspect-[4/5]"].map(
+          (shape, i) => (
+            <div key={i} className={`animate-pulse bg-accent ${shape}`} />
+          ),
+        )}
       </div>
       <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3">
         {Array.from({ length: 6 }).map((_, i) => (
