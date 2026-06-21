@@ -10,10 +10,21 @@ interface ProductGridProps {
   className?: string;
 }
 
-/** Presentational grid: playful rounded cards on a soft card surface. */
+/* Soft, alternating photo-tile tints — clean and editorial, Name It style. */
+const tints = [
+  "[&_[data-slot=product-card-image]]:bg-pop-pink/25",
+  "[&_[data-slot=product-card-image]]:bg-pop-blue/25",
+  "[&_[data-slot=product-card-image]]:bg-pop-yellow/30",
+  "[&_[data-slot=product-card-image]]:bg-pop-green/25",
+];
+
+/**
+ * Presentational grid of large, clean product tiles: a generous tinted photo
+ * with the name and price sitting quietly underneath (no card chrome).
+ */
 export function ProductGrid({ products, locale, outOfStockText, className }: ProductGridProps) {
   return (
-    <div className={cn("grid grid-cols-2 gap-4 sm:grid-cols-3", className)}>
+    <div className={cn("grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3", className)}>
       {products.map((product, index) => (
         <ProductCard
           key={product.id}
@@ -21,15 +32,13 @@ export function ProductGrid({ products, locale, outOfStockText, className }: Pro
           locale={locale}
           outOfStockText={outOfStockText}
           aspectRatio="portrait"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 280px"
           className={cn(
-            "group rounded-3xl bg-card p-2.5 shadow-sm ring-1 ring-border transition-all hover:-translate-y-1 hover:shadow-md",
-            "[&_[data-slot=product-card-image]]:overflow-hidden [&_[data-slot=product-card-image]]:rounded-2xl",
-            "[&_[data-slot=product-card-content]]:px-1.5",
-            index % 5 === 0 && "[&_[data-slot=product-card-image]]:bg-pop-pink/30",
-            index % 5 === 1 && "[&_[data-slot=product-card-image]]:bg-pop-yellow/30",
-            index % 5 === 2 && "[&_[data-slot=product-card-image]]:bg-pop-blue/30",
-            index % 5 === 3 && "[&_[data-slot=product-card-image]]:bg-pop-green/30",
-            index % 5 === 4 && "[&_[data-slot=product-card-image]]:bg-accent",
+            "group block",
+            "[&_[data-slot=product-card-image]]:rounded-[1.75rem]",
+            "[&_[data-slot=product-card-image]_img]:transition-transform [&_[data-slot=product-card-image]_img]:duration-500 group-hover:[&_[data-slot=product-card-image]_img]:scale-105",
+            "[&_[data-slot=product-card-content]]:px-1",
+            tints[index % tints.length],
           )}
         />
       ))}

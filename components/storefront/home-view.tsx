@@ -1,4 +1,5 @@
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 import type { Locale } from "@/lib/i18n";
@@ -12,59 +13,98 @@ interface HomeViewProps {
 }
 
 const collections = [
-  { handle: "new-arrivals", title: "New In", blurb: "Fresh drops", color: "bg-pop-yellow" },
-  { handle: "girls", title: "Girls", blurb: "Twirl-ready", color: "bg-pop-pink" },
-  { handle: "boys", title: "Boys", blurb: "Adventure-proof", color: "bg-pop-blue" },
-  { handle: "baby", title: "Baby", blurb: "Soft & snuggly", color: "bg-pop-green" },
+  {
+    handle: "girls",
+    title: "Girls",
+    blurb: "Twirl-ready",
+    image: "/lifestyle/collection-girls.png",
+    tint: "bg-pop-pink/30",
+  },
+  {
+    handle: "boys",
+    title: "Boys",
+    blurb: "Adventure-proof",
+    image: "/lifestyle/collection-boys.png",
+    tint: "bg-pop-blue/30",
+  },
+  {
+    handle: "baby",
+    title: "Baby",
+    blurb: "Soft & snuggly",
+    image: "/lifestyle/collection-baby.png",
+    tint: "bg-pop-green/30",
+  },
+  {
+    handle: "new-arrivals",
+    title: "New In",
+    blurb: "Fresh drops",
+    image: "/lifestyle/collection-new.png",
+    tint: "bg-pop-yellow/40",
+  },
 ];
 
 export async function HomeView({ locale, products }: HomeViewProps) {
   const resolvedProducts = await products;
 
   return (
-    <div className="space-y-8 pt-2">
-      {/* Hero */}
-      <section className="relative overflow-hidden rounded-[2rem] bg-primary px-6 py-8 text-ink">
-        <span className="absolute -right-8 -top-10 size-32 blob bg-card/40" aria-hidden />
-        <span className="absolute -bottom-6 right-10 size-16 blob-2 bg-pop-pink/50" aria-hidden />
-        <div className="relative max-w-sm">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-ink px-3 py-1 text-xs font-semibold text-background">
-            <Sparkles className="size-3.5" /> New summer collection
+    <div className="space-y-12 pt-2">
+      {/* Hero — big editorial photo */}
+      <section className="relative overflow-hidden rounded-[2rem] bg-accent">
+        <div className="relative aspect-[4/5] w-full sm:aspect-[16/10]">
+          <Image
+            src="/lifestyle/hero-summer.png"
+            alt="Two children playing in colorful summer clothing"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 768px"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/55 via-ink/10 to-transparent" />
+        </div>
+        <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+          <span className="inline-flex items-center rounded-full bg-background/90 px-3 py-1 text-xs font-semibold text-ink backdrop-blur">
+            Summer collection
           </span>
-          <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-balance">
-            Little styles for{" "}
-            <span className="italic">big adventures</span>
+          <h1 className="mt-3 max-w-md font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-background sm:text-5xl">
+            Little styles for <span className="italic">big adventures</span>
           </h1>
-          <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink/70">
-            Playful, comfy, made-to-move clothing for the tiniest trendsetters.
-          </p>
           <Link
             href="/collections/all"
-            className="mt-5 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-background transition-transform hover:scale-105 active:scale-95"
+            className="mt-5 inline-flex items-center gap-2 rounded-full bg-background px-5 py-3 text-sm font-semibold text-ink transition-transform hover:scale-105 active:scale-95"
           >
-            Shop now <ArrowRight className="size-4" />
+            Shop the collection <ArrowRight className="size-4" />
           </Link>
         </div>
       </section>
 
-      {/* Collection chips */}
+      {/* Collections — big photo tiles */}
       <section>
-        <h2 className="mb-3 font-display text-xl font-semibold tracking-tight">Shop by category</h2>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="mb-4 flex items-end justify-between">
+          <h2 className="font-display text-2xl font-semibold tracking-tight">Shop by category</h2>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
           {collections.map((c) => (
             <Link
               key={c.handle}
               href={`/collections/${c.handle}`}
-              className={`group relative flex h-24 flex-col justify-between overflow-hidden rounded-3xl ${c.color} p-4 text-ink transition-transform hover:-translate-y-1`}
+              className="group relative overflow-hidden rounded-[1.75rem]"
             >
-              <span
-                className="absolute -right-4 -top-6 size-16 blob bg-card/40 transition-transform group-hover:scale-110"
-                aria-hidden
-              />
-              <span className="relative text-xs font-medium text-ink/70">{c.blurb}</span>
-              <span className="relative font-display text-2xl font-semibold tracking-tight">
-                {c.title}
-              </span>
+              <div className={`relative aspect-[4/5] w-full ${c.tint}`}>
+                <Image
+                  src={c.image}
+                  alt={`${c.title} collection`}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 360px"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/45 to-transparent" />
+              </div>
+              <div className="absolute inset-x-0 bottom-0 p-4">
+                <span className="block text-xs font-medium text-background/80">{c.blurb}</span>
+                <span className="font-display text-2xl font-semibold tracking-tight text-background">
+                  {c.title}
+                </span>
+              </div>
             </Link>
           ))}
         </div>
@@ -72,8 +112,8 @@ export async function HomeView({ locale, products }: HomeViewProps) {
 
       {/* Featured products */}
       <section>
-        <div className="mb-3 flex items-end justify-between">
-          <h2 className="font-display text-xl font-semibold tracking-tight">Loved by little ones</h2>
+        <div className="mb-4 flex items-end justify-between">
+          <h2 className="font-display text-2xl font-semibold tracking-tight">Loved by little ones</h2>
           <Link
             href="/collections/all"
             className="text-sm font-semibold text-ink/60 transition-colors hover:text-ink"
@@ -89,22 +129,44 @@ export async function HomeView({ locale, products }: HomeViewProps) {
           </p>
         )}
       </section>
+
+      {/* Story band — big editorial photo */}
+      <section className="relative overflow-hidden rounded-[2rem]">
+        <div className="relative aspect-[16/11] w-full sm:aspect-[16/8]">
+          <Image
+            src="/lifestyle/story-play.png"
+            alt="Children playing together outdoors"
+            fill
+            sizes="(max-width: 768px) 100vw, 768px"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink/50 to-transparent" />
+        </div>
+        <div className="absolute inset-y-0 left-0 flex max-w-xs flex-col justify-center p-6 sm:p-8">
+          <h2 className="font-display text-3xl font-semibold leading-tight tracking-tight text-balance text-background">
+            Made to play, built to last
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-background/80">
+            Soft, durable fabrics designed for muddy knees, big imaginations and hand-me-downs.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }
 
 export function HomeViewFallback({ locale: _locale }: { locale: Locale }) {
   return (
-    <div className="space-y-8 pt-2">
-      <div className="h-64 animate-pulse rounded-[2rem] bg-accent" />
-      <div className="grid grid-cols-2 gap-3">
+    <div className="space-y-12 pt-2">
+      <div className="aspect-[4/5] animate-pulse rounded-[2rem] bg-accent sm:aspect-[16/10]" />
+      <div className="grid grid-cols-2 gap-4">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="h-24 animate-pulse rounded-3xl bg-accent" />
+          <div key={i} className="aspect-[4/5] animate-pulse rounded-[1.75rem] bg-accent" />
         ))}
       </div>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="aspect-[3/4] animate-pulse rounded-3xl bg-accent" />
+          <div key={i} className="aspect-[3/4] animate-pulse rounded-[1.75rem] bg-accent" />
         ))}
       </div>
     </div>

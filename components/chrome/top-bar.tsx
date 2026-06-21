@@ -12,7 +12,7 @@ const titles: Array<[RegExp, string]> = [
   [/^\/collections\/boys/, "Boys"],
   [/^\/collections\/baby/, "Baby & Toddler"],
   [/^\/collections/, "Collection"],
-  [/^\/products/, "Product"],
+  [/^\/products/, ""],
   [/^\/search/, "Search"],
   [/^\/cart/, "Your Bag"],
   [/^\/account/, "Account"],
@@ -49,7 +49,7 @@ export function TopBar() {
           </button>
         )}
 
-        {!isHome && (
+        {!isHome && titleFor(pathname) && (
           <span className="font-display text-lg font-semibold text-ink">
             {titleFor(pathname)}
           </span>

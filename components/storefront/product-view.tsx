@@ -1,6 +1,3 @@
-import { ChevronLeft } from "lucide-react";
-import Link from "next/link";
-
 import {
   ProductDetailSection,
   ProductDetailSectionSkeleton,
@@ -24,13 +21,6 @@ export async function ProductView({
 }: ProductViewProps) {
   return (
     <div className="space-y-5 pt-2">
-      <Link
-        href="/collections/all"
-        className="inline-flex items-center gap-1.5 rounded-full bg-card px-4 py-2 text-sm font-semibold text-ink shadow-sm ring-1 ring-border transition-colors hover:bg-accent"
-      >
-        <ChevronLeft className="size-4" /> Back to shop
-      </Link>
-
       <div className="rounded-[2rem] bg-card p-5 shadow-sm ring-1 ring-border sm:p-7">
         <ProductDetailSection
           product={product}
