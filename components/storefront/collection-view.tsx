@@ -29,7 +29,7 @@ export async function CollectionView({
 }: CollectionViewProps) {
   const data = await collectionResultsDataPromise;
   const products = data.result.products;
-  const count = data.result.totalCount ?? products.length;
+  const count = products.length;
 
   return (
     <div className="space-y-6 pt-2">
